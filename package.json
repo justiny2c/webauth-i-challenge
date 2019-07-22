@@ -1,0 +1,25 @@
+{
+  "name": "webauth-i-challenge",
+  "version": "1.0.0",
+  "description": "webauth-i-challenge",
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/justiny2c/webauth-i-challenge.git"
+  },
+  "author": "justin-chen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/justiny2c/webauth-i-challenge/issues"
+  },
+  "homepage": "https://github.com/justiny2c/webauth-i-challenge#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "express": "^4.17.1",
+    "knex": "^0.19.0",
+    "sqlite3": "^4.0.9"
+  }
+}
