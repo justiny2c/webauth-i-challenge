@@ -11,8 +11,16 @@ function find() {
   return db('users').select('id', 'username', 'password');
 }
 
-function findBy(filter) {
-  return db('users').where(filter);
+function findBy(username) {
+  return db('users')
+    .where(username)
+    .then(user => {
+        if (user.length) {
+            return user[0]
+        } else {
+            return null
+        }
+    })
 }
 
 function add(user) {
