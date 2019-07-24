@@ -1,8 +1,10 @@
+
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const Users = require("../users/user-model.js")
+const Users = require("../users/user-model.js");
+const secrets = require("../config/secrets.js")
 
 router.post('/register', (req, res) => {
     let user = req.body;
@@ -33,16 +35,18 @@ router.post('/register', (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-    let { username, password } = req.body
+    let { username, password } = req.body;
 
     Users.findBy({ username })
         // .first()
         .then(user => {
             if (user && bcrypt.compareSync(password, user.password)) {
+                //produce a token
+                const token = generateToken(user)
                 
-                req.session.username = user.username;
-                
-                res.status(200).json({ message: `Login successful, ${user.username}`})
+                res.status(200).json({ 
+                    message: `Login successful, ${user.username}`,
+                    token   })
             } else {
                 res.status(401).json({ message: "Username and Password incorrect" })
             }
@@ -52,19 +56,32 @@ router.post("/login", (req, res) => {
         })
 });
 
-router.get("/logout", (req, res) => {
-    if (req.session) {
-    req.session.destroy(err => {
-      if (err) {
-        res.status(500).json({ message: "Error logging out"})
-      } else {
-        res.status(200).json({ message: "Bye" })
-      }
-    })
-    } else {
-      res.status(200).json({ message: "Okay, bye..."})
-    }
-});
+// router.get("/logout", (req, res) => {
+//     if (req.session) {
+//     req.session.destroy(err => {
+//       if (err) {
+//         res.status(500).json({ message: "Error logging out"})
+//       } else {
+//         res.status(200).json({ message: "Bye" })
+//       }
+//     })
+//     } else {
+//       res.status(200).json({ message: "Okay, bye..."})
+//     }
+// });
+
+function generateToken(user) {
+    const jwtPayload = {
+        subject: user.id,
+        username: user.username,
+        department: user.department,
+      };
+    
+      const jwtOptions = {
+        expiresIn: '1d',
+      };
+      return jwt.sign(jwtPayload, secrets.jwtSecret, jwtOptions);
+}
 
 
 

@@ -7,8 +7,14 @@ module.exports = {
   findById,
 };
 
-function find() {
-  return db('users').select('id', 'username', 'password');
+function find(department) {
+  const query = db('users').select('id', 'username', 'department');
+
+  if (department) {
+    query
+    .where({ department })
+  } 
+    return query 
 }
 
 function findBy(username) {

@@ -3,14 +3,14 @@ const express = require('express');
 const authRouter = require("../auth/auth-router.js");
 const usersRouter = require("../users/users-router.js");
 
-const globalMiddleware = require("./global-middleware.js")
+// const globalMiddleware = require("./global-middleware.js")
 const server = express();
 
 
 
-// server.use(express.json());
+server.use(express.json());
 
-globalMiddleware(server);
+// globalMiddleware(server);
 
 server.use("/api/auth", authRouter);
 server.use("/api/users", usersRouter);
